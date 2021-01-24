@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from decimal import Decimal
 from statistics import mean
@@ -11,6 +12,8 @@ from weatherapi.apps.weather.models import ForecastSpan
 from weatherapi.apps.weather.weather_data_integrations.base import WeatherDataIntegrationGateway, WeatherForecast, \
     WeatherIntegrationGatewayException
 from weatherapi.apps.weather.weather_data_integrations.base.exceptions import WeatherIntegrationGatewayExceptionCode
+
+LOG = logging.getLogger(__name__)
 
 
 class OpenWeatherGateway(WeatherDataIntegrationGateway):
@@ -35,22 +38,22 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
 
     def __open_api_weather_to_weather_forcast(self, owm_weather: Weather, forecast_span: ForecastSpan, timezone: str, long, lat):
         if forecast_span is ForecastSpan.DAY:
-            temp = mean(
+            temp = Decimal(mean(
                 [
                     owm_weather.temp['morn'],
                     owm_weather.temp['day'],
                     owm_weather.temp['eve'],
                     owm_weather.temp['night']
                 ]
-            )
-            feels_like = mean(
+            ))
+            feels_like = Decimal(mean(
                 [
                     owm_weather.temp['feels_like_morn'],
                     owm_weather.temp['feels_like_day'],
                     owm_weather.temp['feels_like_eve'],
                     owm_weather.temp['feels_like_night']
                 ]
-            )
+            ))
             rain = Decimal(owm_weather.rain.get('all', 0))
             snow = Decimal(owm_weather.snow.get('all', 0))
         else:
@@ -88,17 +91,22 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
             forecast_span=forecast_span
         )
 
-    def fetch_weather_data(self, long, lat) -> dict:
+    def _fetch_weather_data(self, long, lat) -> dict:
+        LOG.info("Fetching weather data from Open Weather Map using 'One Call' API")
         try:
             return self.open_weather_client.one_call(lat=lat, lon=long, exclude='minutely,alerts', units='metric')
         except ConfigurationError as e:
+            LOG.info("ConfigurationError occurred while fetching weather data from Open Weather Map")
             raise WeatherIntegrationGatewayException(f"{e}", e, WeatherIntegrationGatewayExceptionCode.CONFIGURATION.value)
         except APIRequestError as e:
+            LOG.info("APIRequestError occurred while fetching weather data from Open Weather Map")
             raise WeatherIntegrationGatewayException(f"{e}", e, WeatherIntegrationGatewayExceptionCode.REQUEST.value)
         except APIResponseError as e:
+            LOG.info("APIResponseError occurred while fetching weather data from Open Weather Map")
             raise WeatherIntegrationGatewayException(f"{e}", e, WeatherIntegrationGatewayExceptionCode.RESPONSE.value)
 
-    def extract_curated_weather_forecasts(self, weather_api_response: OneCall):
+    def _extract_curated_weather_forecasts(self, weather_api_response: OneCall):
+        LOG.info("Parsing Open Weather Map 'One Call' API response")
         # add the current forecast as hourly forecast
         weather_forecasts: List[WeatherForecast] = [
             self.__open_api_weather_to_weather_forcast(weather_api_response.current, ForecastSpan.INSTANT, weather_api_response.timezone, weather_api_response.lon, weather_api_response.lat)

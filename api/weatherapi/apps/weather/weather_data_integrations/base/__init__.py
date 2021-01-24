@@ -13,8 +13,8 @@ class WeatherDataIntegrationGateway:
 
     def get_weather_by_coords(self, long, lat) -> List[WeatherForecast]:
         try:
-            weather_api_resonse = self.fetch_weather_data(long, lat)
-            return self.extract_curated_weather_forecasts(weather_api_resonse)
+            weather_api_resonse = self._fetch_weather_data(long, lat)
+            return self._extract_curated_weather_forecasts(weather_api_resonse)
         except Exception as e:
             LOG.info(f"Exception occurred while fetching data from weather integration gateway.", exc_info=True)
             if isinstance(e, WeatherIntegrationGatewayException):
@@ -23,9 +23,9 @@ class WeatherDataIntegrationGateway:
                 raise WeatherIntegrationGatewayException.unexpected_issue(e)
 
     @abc.abstractmethod
-    def fetch_weather_data(self, long, lat) -> dict:
+    def _fetch_weather_data(self, long, lat) -> dict:
         pass
 
     @abc.abstractmethod
-    def extract_curated_weather_forecasts(self, weather_api_response):
+    def _extract_curated_weather_forecasts(self, weather_api_response):
         pass
