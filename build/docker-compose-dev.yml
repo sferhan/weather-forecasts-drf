@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - "weatherapi-pgdata:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_DB=weatherapi
+      - POSTGRES_USER=weatherapi
+      - POSTGRES_PASSWORD=weatherapi
+    ports:
+      - "5432:5432"
+  # redis:
+  #   image: redis:latest
+  # elastic:
+  #   image: elasticsearch:7.2.0
+  #   volumes:
+  #     - "weatherapi-elasticdata:/usr/share/elasticsearch/data"
+  #   environment:
+  #     - discovery.type=single-node
+  #   ports:
+  #     - "9200:9200"
+  #     - "9300:9200"
+
+volumes:
+  weatherapi-pgdata:
+  weatherapi-elasticdata:
