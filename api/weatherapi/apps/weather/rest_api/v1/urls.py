@@ -1,22 +1,25 @@
 from django.urls import path
 
-from weatherapi.apps.weather.rest_api.v1.views import fetch_weather_data, WeatherForecastsSearchAPIView, \
-    WeatherForecastsExportSearchAPIView
+from weatherapi.apps.weather.rest_api.base.views.export_weather_forecasts import ExportWeatherForecastsSearchAPIView
+from weatherapi.apps.weather.rest_api.base.views.fetch_weather_forecasts import fetch_weather_data
+from weatherapi.apps.weather.rest_api.base.views.search_weather_forecasts import SearchWeatherForecastsAPIView
+
+app_name = 'v1'
 
 urlpatterns = [
     path(
-        'fetch-weather-data',
+        'fetch-weather-forecasts',
         fetch_weather_data,
         name="fetch-weather-data-ep"
     ),
     path(
-        'search-weather-data',
-        WeatherForecastsSearchAPIView.as_view(),
+        'search-weather-forecasts',
+        SearchWeatherForecastsAPIView.as_view(),
         name="weather-forecast-search-ep"
     ),
     path(
-        'export-search-weather-data',
-        WeatherForecastsExportSearchAPIView.as_view(),
+        'export-search-weather-forecasts',
+        ExportWeatherForecastsSearchAPIView.as_view(),
         name="weather-forecast-export-search-ep"
     )
 ]

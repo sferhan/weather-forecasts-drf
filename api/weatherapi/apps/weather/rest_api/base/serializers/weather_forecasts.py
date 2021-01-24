@@ -24,22 +24,3 @@ class WeatherForecastsSerializer(serializers.ModelSerializer):
     def get_misc(self, obj: WeatherForecasts):
         # misc is a dict already, prevent its serialization to string
         return obj.misc
-
-
-class LongLatSerializer(serializers.Serializer):
-    long = serializers.FloatField(required=True)
-    lat = serializers.FloatField(required=True)
-
-
-class WeatherForecastTimeFilter(serializers.Serializer):
-    start = serializers.DateTimeField(required=False)
-    end = serializers.DateTimeField(required=False)
-
-
-class WeatherForecastFiltersSerializer(serializers.Serializer):
-    timestamp = WeatherForecastTimeFilter(required=False)
-
-
-class WeatherForecastSearchSerializer(serializers.Serializer):
-    filters = WeatherForecastFiltersSerializer()
-    order_by = serializers.CharField()

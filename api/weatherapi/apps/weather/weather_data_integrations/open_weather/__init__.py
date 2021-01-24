@@ -2,20 +2,18 @@ from datetime import datetime
 from decimal import Decimal
 from statistics import mean
 from typing import List
-
 from pyowm.commons.enums import SubscriptionTypeEnum
-from pyowm.commons.exceptions import PyOWMError, ConfigurationError, APIRequestError, APIResponseError
+from pyowm.commons.exceptions import ConfigurationError, APIRequestError, APIResponseError
 from pyowm.weatherapi25.one_call import OneCall
 from pyowm.weatherapi25.weather import Weather
-
-from weatherapi.apps.weather.integrations_gateways import WeatherIntegrationGateway, WeatherForecast, \
-    WeatherIntegrationGatewayException, WeatherIntegrationGatewayExceptionCode
 from pyowm.owm import OWM
-
 from weatherapi.apps.weather.models import ForecastSpan
+from weatherapi.apps.weather.weather_data_integrations.base import WeatherDataIntegrationGateway, WeatherForecast, \
+    WeatherIntegrationGatewayException
+from weatherapi.apps.weather.weather_data_integrations.base.exceptions import WeatherIntegrationGatewayExceptionCode
 
 
-class OpenWeatherGateway(WeatherIntegrationGateway):
+class OpenWeatherGateway(WeatherDataIntegrationGateway):
     def __init__(self, open_weather_api_key):
         self._API_KEY = open_weather_api_key
         self.config = {
@@ -82,9 +80,9 @@ class OpenWeatherGateway(WeatherIntegrationGateway):
             dew_point = Decimal(owm_weather.dewpoint),
             heat_index = Decimal(owm_weather.heat_index) if owm_weather.heat_index else None,
             utc_offset = owm_weather.utc_offset,
-            uvi = (Decimal(owm_weather.uvi) if owm_weather.uvi else None),
-            sunrise = (datetime.fromtimestamp(owm_weather.srise_time) if owm_weather.srise_time else None),
-            sunset = (datetime.fromtimestamp(owm_weather.sset_time) if owm_weather.sset_time else None),
+            uvi = Decimal(owm_weather.uvi) if owm_weather.uvi else None,
+            sunrise = datetime.fromtimestamp(owm_weather.srise_time) if owm_weather.srise_time else None,
+            sunset = datetime.fromtimestamp(owm_weather.sset_time) if owm_weather.sset_time else None,
             feels_like = feels_like,
             wind_gust = Decimal(owm_weather.wnd['gust']) if 'gust' in owm_weather.wnd else None,
             forecast_span=forecast_span
