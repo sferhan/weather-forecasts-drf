@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     "rest_framework",
     'django_filters',
+    "drf_yasg",
     # our apps
     "weatherapi.apps.common.apps.CommonConfig",
     "weatherapi.apps.account.apps.AccountConfig",

@@ -2,8 +2,11 @@ import logging
 
 from django.db import IntegrityError
 from django.http import HttpRequest, JsonResponse
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 from weatherapi.apps.weather.exceptions import ServiceUnavailable, UnexpectedServerError, BadRequestError
+from weatherapi.apps.weather.rest_api.base.serializers.error_response import ErrorResponseSerializer
 from weatherapi.apps.weather.weather_data_integrations.base import WeatherIntegrationGatewayException
 from weatherapi.apps.weather.weather_data_integrations.open_weather import OpenWeatherGateway
 from weatherapi.apps.weather.rest_api.base.serializers.fetch_weather_forecasts_request import \
@@ -14,6 +17,18 @@ from weatherapi.settings import env
 LOG = logging.getLogger(__name__)
 
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Fetches daily weather forecasts for this day and next seven days, hourly forecast for 48"
+                          " hours and current weather for location represented by longitude and latitude, caches them "
+                          "and returns the list of fetched forecasts - Not Paginated",
+    query_serializer=FetchWeatherForecastsRequestSerializer, responses={
+        200: WeatherForecastsSerializer(many=True),
+        400: openapi.Response("Bad request", schema=ErrorResponseSerializer),
+        500: openapi.Response("Error response", schema=ErrorResponseSerializer),
+        503: openapi.Response("Data cannot be fetched from service provider", schema=ErrorResponseSerializer)
+    }
+)
 @api_view(['GET'])
 def fetch_weather_data(request: HttpRequest) -> JsonResponse:
     LOG.info(f"Received fetch-weather-data request")
