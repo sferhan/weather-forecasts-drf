@@ -2,8 +2,12 @@ import abc
 import logging
 from typing import List
 
-from weatherapi.apps.weather.weather_data_integrations.base.data_models import WeatherForecast
-from weatherapi.apps.weather.weather_data_integrations.base.exceptions import WeatherIntegrationGatewayException
+from weatherapi.apps.weather.weather_data_integrations.base.data_models import (
+    WeatherForecast,
+)
+from weatherapi.apps.weather.weather_data_integrations.base.exceptions import (
+    WeatherIntegrationGatewayException,
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -16,7 +20,10 @@ class WeatherDataIntegrationGateway:
             weather_api_resonse = self._fetch_weather_data(long, lat)
             return self._extract_curated_weather_forecasts(weather_api_resonse)
         except Exception as e:
-            LOG.info(f"Exception occurred while fetching data from weather integration gateway.", exc_info=True)
+            LOG.info(
+                f"Exception occurred while fetching data from weather integration gateway.",
+                exc_info=True,
+            )
             if isinstance(e, WeatherIntegrationGatewayException):
                 raise e
             else:

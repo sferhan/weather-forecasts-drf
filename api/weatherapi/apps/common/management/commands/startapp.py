@@ -5,7 +5,6 @@ from django.conf import settings
 from django.core.management.base import CommandError
 from django.core.management.commands import startapp
 
-
 DS_BE_APP_TEMPLATE = "https://be.skeletons.djangostars.com/djangostars_app_template__django{extensions}.tar.gz"
 
 
@@ -35,4 +34,6 @@ class Command(startapp.Command):
         if "rest_framework" in settings.INSTALLED_APPS:
             extensions.append("drf")
 
-        return DS_BE_APP_TEMPLATE.format(extensions="_{}".format("_".join(extensions)) if len(extensions) > 0 else "")
+        return DS_BE_APP_TEMPLATE.format(
+            extensions="_{}".format("_".join(extensions)) if len(extensions) > 0 else ""
+        )

@@ -14,7 +14,6 @@ import os
 
 from .environment import env
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -45,7 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 3rd party apps
     "rest_framework",
-    'django_filters',
+    "django_filters",
     "drf_yasg",
     # our apps
     "weatherapi.apps.common.apps.CommonConfig",
@@ -64,10 +63,10 @@ MIDDLEWARE = [
 ] + env.list("WEATHERAPI_DEV_MIDDLEWARE", default=[])
 
 REST_FRAMEWORK = {
-    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
-    'EXCEPTION_HANDLER': 'weatherapi.apps.weather.middlewares.exception.custom_exception_handler',
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 30
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
+    "EXCEPTION_HANDLER": "weatherapi.apps.weather.middlewares.exception.custom_exception_handler",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 30,
 }
 
 ROOT_URLCONF = "weatherapi.urls"
@@ -103,7 +102,9 @@ DATABASES = {"default": env.db("WEATHERAPI_DATABASE_URL")}
 AUTH_USER_MODEL = "account.User"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},

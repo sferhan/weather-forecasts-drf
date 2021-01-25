@@ -25,7 +25,11 @@ class WeatherIntegrationGatewayException(Exception):
 
     @classmethod
     def unexpected_issue(cls, base_exception: Exception):
-        return cls('Something went wrong while fetching weather info.', base_exception= base_exception, code=WeatherIntegrationGatewayExceptionCode.UNKNOWN.value)
+        return cls(
+            "Something went wrong while fetching weather info.",
+            base_exception=base_exception,
+            code=WeatherIntegrationGatewayExceptionCode.UNKNOWN.value,
+        )
 
     def to_api_exception(self):
         return APIException()

@@ -65,6 +65,7 @@ pyowm==3.1.1
 django-filter==2.4.0
 djangorestframework-csv==2.1.0
 vcrpy-unittest==0.1.7
+pre-commit==2.9.3
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools==41.2.0        # via ipdb, ipython

@@ -11,18 +11,16 @@ sample_hourly_forecasts = [
         "visibility": 10000,
         "wind_speed": 4.37,
         "wind_deg": 56,
-        "snow": {
-            "1h": 30.65
-        },
+        "snow": {"1h": 30.65},
         "weather": [
             {
                 "id": 804,
                 "main": "Clouds",
                 "description": "overcast clouds",
-                "icon": "04n"
+                "icon": "04n",
             }
         ],
-        "pop": 0.48
+        "pop": 0.48,
     },
     {
         "dt": 1611525600,
@@ -36,19 +34,17 @@ sample_hourly_forecasts = [
         "visibility": 10000,
         "wind_speed": 3.66,
         "wind_deg": 57,
-        "rain": {
-            "1h": 30.65
-        },
+        "rain": {"1h": 30.65},
         "weather": [
             {
                 "id": 804,
                 "main": "Clouds",
                 "description": "overcast clouds",
-                "icon": "04d"
+                "icon": "04d",
             }
         ],
-        "pop": 0.44
-    }
+        "pop": 0.44,
+    },
 ]
 
 sample_current_forecast = {
@@ -67,13 +63,8 @@ sample_current_forecast = {
     "wind_deg": 97,
     "wind_gust": 1.34,
     "weather": [
-        {
-            "id": 804,
-            "main": "Clouds",
-            "description": "overcast clouds",
-            "icon": "04n"
-        }
-    ]
+        {"id": 804, "main": "Clouds", "description": "overcast clouds", "icon": "04n"}
+    ],
 }
 
 sample_daily_forecasts = [
@@ -87,31 +78,21 @@ sample_daily_forecasts = [
             "max": 282.92,
             "night": 278.95,
             "eve": 280.6,
-            "morn": 278.66
+            "morn": 278.66,
         },
-        "feels_like": {
-            "day": 277.62,
-            "night": 275.57,
-            "eve": 277.24,
-            "morn": 274.2
-        },
+        "feels_like": {"day": 277.62, "night": 275.57, "eve": 277.24, "morn": 274.2},
         "pressure": 1026,
         "humidity": 69,
         "dew_point": 276.7,
         "wind_speed": 4.15,
         "wind_deg": 66,
         "weather": [
-            {
-                "id": 501,
-                "main": "Rain",
-                "description": "moderate rain",
-                "icon": "10d"
-            }
+            {"id": 501, "main": "Rain", "description": "moderate rain", "icon": "10d"}
         ],
         "clouds": 10,
         "pop": 1,
         "rain": 3.76,
-        "uvi": 3.13
+        "uvi": 3.13,
     },
     {
         "dt": 1611626400,
@@ -123,38 +104,28 @@ sample_daily_forecasts = [
             "max": 283.44,
             "night": 281.41,
             "eve": 281.65,
-            "morn": 277.49
+            "morn": 277.49,
         },
-        "feels_like": {
-            "day": 280.54,
-            "night": 279.91,
-            "eve": 279.67,
-            "morn": 274.7
-        },
+        "feels_like": {"day": 280.54, "night": 279.91, "eve": 279.67, "morn": 274.7},
         "pressure": 1026,
         "humidity": 58,
         "dew_point": 275.67,
         "wind_speed": 1.84,
         "wind_deg": 70,
         "weather": [
-            {
-                "id": 803,
-                "main": "Clouds",
-                "description": "broken clouds",
-                "icon": "04d"
-            }
+            {"id": 803, "main": "Clouds", "description": "broken clouds", "icon": "04d"}
         ],
         "clouds": 68,
         "pop": 0.56,
-        "uvi": 3.09
-    }
+        "uvi": 3.09,
+    },
 ]
 
 
 def get_sample_one_call_response(
-        hourly_forecasts=sample_hourly_forecasts,
-        current_forecast=sample_current_forecast,
-        daily_forecasts=sample_daily_forecasts
+    hourly_forecasts=sample_hourly_forecasts,
+    current_forecast=sample_current_forecast,
+    daily_forecasts=sample_daily_forecasts,
 ):
     return {
         "lat": 35,
@@ -163,5 +134,5 @@ def get_sample_one_call_response(
         "timezone_offset": 32400,
         "current": current_forecast,
         "hourly": hourly_forecasts,
-        "daily": daily_forecasts
+        "daily": daily_forecasts,
     }

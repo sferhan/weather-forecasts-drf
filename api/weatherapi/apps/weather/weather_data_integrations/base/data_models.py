@@ -40,9 +40,9 @@ class WeatherForecast:
 
     def to_weather_forecast_record(self) -> WeatherForecasts:
         return WeatherForecasts(
-            lon = self.lon,
-            lat = self.lat,
-            timestamp = self.timestamp,
+            lon=self.lon,
+            lat=self.lat,
+            timestamp=self.timestamp,
             forecast_span=self.forecast_span.value,
             weather_desc_main=self.status,
             timezone=self.timezone,
@@ -53,21 +53,21 @@ class WeatherForecast:
             visibility=self.visibility_distance,
             uvi=self.uvi,
             misc={
-                'clouds': self.clouds,
-                'wind_deg': self.wind_deg,
-                'rain': self.rain,
-                'snow': self.snow,
-                'detailed_status': self.detailed_status,
-                'weather_code': self.weather_code,
-                'weather_icon_name': self.weather_icon_name,
-                'dew_point': self.dew_point,
-                'heat_index': self.heat_index,
-                'utc_offset': self.utc_offset,
-                'sunrise': self.sunrise,
-                'sunset': self.sunset,
-                'feels_like': self.feels_like,
-                'wind_gust': self.wind_gust
-            }
+                "clouds": self.clouds,
+                "wind_deg": self.wind_deg,
+                "rain": self.rain,
+                "snow": self.snow,
+                "detailed_status": self.detailed_status,
+                "weather_code": self.weather_code,
+                "weather_icon_name": self.weather_icon_name,
+                "dew_point": self.dew_point,
+                "heat_index": self.heat_index,
+                "utc_offset": self.utc_offset,
+                "sunrise": self.sunrise,
+                "sunset": self.sunset,
+                "feels_like": self.feels_like,
+                "wind_gust": self.wind_gust,
+            },
         )
 
     def __str__(self):
