@@ -67,15 +67,19 @@ def fetch_weather_data(request: HttpRequest) -> JsonResponse:
     )
 
     try:
+        LOG.info(f"Initializing Open Weather Gateway")
         weather_gateway = OpenWeatherGateway(env("OPEN_WEATHER_MAP_KEY"))
 
+        LOG.info(f"Fetching weather forecasts from Open Weather Gateway")
         weather_forecasts = weather_gateway.get_weather_by_coords(
             params.validated_data["long"], params.validated_data["lat"]
         )
+        LOG.info(f"Successfully fetched weather forecasts")
     except WeatherIntegrationGatewayException as e:
         LOG.exception(f"Exception occurred while fetching weather data. {e}")
         raise ServiceUnavailable(details=str(e), error_code=e.code)
 
+    LOG.info(f"Caching weather forecasts")
     weather_forecasts_model_objs = []
     for forecast in weather_forecasts:
         try:
@@ -89,6 +93,7 @@ def fetch_weather_data(request: HttpRequest) -> JsonResponse:
                 f"An error occurred while saving weather forecast: {forecast}. Details: {e}"
             )
 
+    LOG.info(f"Serializing weather forecasts")
     try:
         return JsonResponse(
             data=WeatherForecastsSerializer(
@@ -97,5 +102,6 @@ def fetch_weather_data(request: HttpRequest) -> JsonResponse:
             safe=False,
         )
     except Exception as e:
+        LOG.info(f"Exception occurred while serializing weather forecasts")
         # failure in serializing the response
         raise UnexpectedServerError(details=str(e), error_code="unknown")

@@ -39,4 +39,5 @@ class SearchWeatherForecastsAPIView(ListAPIView):
         },
     )
     def get(self, request, *args, **kwargs):
+        LOG.info(f"Received export weather forecasts request")
         return self.list(request, *args, **kwargs)

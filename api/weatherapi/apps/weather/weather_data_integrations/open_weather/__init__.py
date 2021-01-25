@@ -48,15 +48,22 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
         ).weather_manager()
         super().__init__()
 
-    def __open_api_weather_to_weather_forcast(
+    def __open_api_weather_to_weather_forecast(
         self,
         owm_weather: Weather,
         forecast_span: ForecastSpan,
         timezone: str,
         long,
         lat,
-    ):
+    ) -> WeatherForecast:
+        """
+        Transforms Open Weather Map's Weather forecast object to local dataclass by performing required data
+        transformations
+        """
         if forecast_span is ForecastSpan.DAY:
+            # a daily weather forecast object has a different structure then hourly and instantaneous forecast,
+            # perform the required transformations
+            # temperature is the mean of morning, day, evening and night temperature
             temp = Decimal(
                 mean(
                     [
@@ -67,6 +74,7 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
                     ]
                 )
             )
+            # feels_like is the mean of morning, day, evening and night feels_like
             feels_like = Decimal(
                 mean(
                     [
@@ -77,6 +85,7 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
                     ]
                 )
             )
+            # accumulated rain and snow
             rain = Decimal(owm_weather.rain.get("all", 0))
             snow = Decimal(owm_weather.snow.get("all", 0))
         else:
@@ -156,7 +165,7 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
         LOG.info("Parsing Open Weather Map 'One Call' API response")
         # add the current forecast as hourly forecast
         weather_forecasts: List[WeatherForecast] = [
-            self.__open_api_weather_to_weather_forcast(
+            self.__open_api_weather_to_weather_forecast(
                 weather_api_response.current,
                 ForecastSpan.INSTANT,
                 weather_api_response.timezone,
@@ -168,7 +177,7 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
         # add the hourly forecasts
         for forecast in weather_api_response.forecast_hourly:
             weather_forecasts.append(
-                self.__open_api_weather_to_weather_forcast(
+                self.__open_api_weather_to_weather_forecast(
                     forecast,
                     ForecastSpan.HOUR,
                     weather_api_response.timezone,
@@ -180,7 +189,7 @@ class OpenWeatherGateway(WeatherDataIntegrationGateway):
         # add daily forecasts
         for forecast in weather_api_response.forecast_daily:
             weather_forecasts.append(
-                self.__open_api_weather_to_weather_forcast(
+                self.__open_api_weather_to_weather_forecast(
                     forecast,
                     ForecastSpan.DAY,
                     weather_api_response.timezone,
