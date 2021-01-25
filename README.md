@@ -10,9 +10,8 @@ An Django REST Framework application for pulling, caching, searching and exporti
 ## How to run
 1. Create a virtual env `python3 -m venv venv`
 2. Activate venv `source ./venv/bin/activate`
-3. Install requirements `pip install -r ./api/requirements/dev.txt`
-4. Configure local postgres database `./scripts/setup-dev.sh`
-5. Start django server `python ./api/manage.py runserver`
+3. Configure local postgres database `./scripts/setup-dev.sh`
+4. Start django server `python ./api/manage.py runserver`
 
 ## Features
 ### API features
