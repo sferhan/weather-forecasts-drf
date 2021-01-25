@@ -6,21 +6,29 @@ services:
       context: ..
       dockerfile: build/Dockerfile.api
     depends_on:
-      - postgres
+      - weather_db_postgres
+    links:
+      - weather_db_postgres
     environment:
-      - WEATHERAPI_DATABASE_URL=psql://weatherapi:weatherapi@postgres:5432/weatherapi
+      - WEATHERAPI_DATABASE_URL=psql://weatherapi@localhost:5432/weatherapi
+      - DEBUG=1
     ports:
       - "8000:8000"
-  postgres:
-    image: postgres:latest
-    volumes:
-      - "weatherapi-pgdata:/var/lib/postgresql/data"
+    restart: on-failure
+  weather_db_postgres:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile.pg
     environment:
-      - POSTGRES_DB=weatherapi
-      - POSTGRES_USER=weatherapi
-      - POSTGRES_PASSWORD=weatherapi
+      - POSTGRES12_DATABASE_NAMES=weatherapi
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
-      - "5432:5432"
+      - 127.0.0.1:5432:5432
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5432"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   # redis:
   #   image: redis:latest
   # elastic:

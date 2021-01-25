@@ -1,16 +1,22 @@
 version: '3'
 
 services:
-  postgres:
-    image: postgres:latest
-    volumes:
-      - "weatherapi-pgdata:/var/lib/postgresql/data"
+  weather_db_postgres:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile.pg
     environment:
-      - POSTGRES_DB=weatherapi
-      - POSTGRES_USER=weatherapi
-      - POSTGRES_PASSWORD=weatherapi
+      - POSTGRES12_DATABASE_NAMES=weatherapi
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
-      - "5432:5432"
+      - 127.0.0.1:5432:5432
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5432"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  waiter:
+    image: jwilder/dockerize
   # redis:
   #   image: redis:latest
   # elastic:

@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  api:
+  build_and_test:
     docker:
       - image: circleci/python:stretch-browsers-legacy
       - image: circleci/postgres:alpine-postgis-ram
@@ -61,4 +61,4 @@ workflows:
 
   weatherapi:
     jobs:
-      - api
+      - build_and_test
