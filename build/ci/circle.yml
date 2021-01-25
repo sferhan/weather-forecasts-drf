@@ -1,14 +1,31 @@
 version: 2
+docker-auth-content: &docker-auth
+  auth:
+    username: broadsword007
+    password: $DOCKER_HUB_ACCESS_TOKEN
+
+executors:
+  auth-docker-executor:
+    parameters:
+      image-name:
+        type: string
+    docker:
+      - image: <<parameters.image-name>>
+        <<: *docker-auth
 
 jobs:
   build_and_test:
     docker:
       - image: circleci/python:stretch-browsers-legacy
-      - image: circleci/postgres:alpine-postgis-ram
+      - image: broadsword007/postgres12:0.0.1
+        <<: *docker-auth
+        environment:
+          POSTGRES12_DATABASE_NAMES: weatherapi
+          POSTGRES_HOST_AUTH_METHOD: trust
     working_directory: ~/app
     environment:
       - WEATHERAPI_DEBUG=off
-      - WEATHERAPI_DATABASE_URL=psql://root@localhost:5432/circle_test
+      - WEATHERAPI_DATABASE_URL=psql://weatherapi@localhost:5432/weatherapi
       - WEATHERAPI_SECRET_KEY=1234567890
     steps:
       - checkout
