@@ -9,9 +9,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ("auth", "0009_alter_user_last_name_max_length"),
-    ]
+    dependencies = [("auth", "0009_alter_user_last_name_max_length")]
 
     operations = [
         migrations.CreateModel(
@@ -114,8 +112,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={
-                "ordering": ("first_name", "last_name"),
-            },
-        ),
+            options={"ordering": ("first_name", "last_name")},
+        )
     ]

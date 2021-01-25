@@ -69,10 +69,8 @@ class OpenWeatherGatewayTestCase(OpenWeatherGatewayVCRMixin, TestCase):
 
     def test_extract_curated_weather_forecasts_curates_hourly_forecast_correctly(self):
         one_call_json_response = get_sample_one_call_response(daily_forecasts=[])
-        curated_forecasts = (
-            self.open_weather_gateway._extract_curated_weather_forecasts(
-                OneCall.from_dict(one_call_json_response)
-            )
+        curated_forecasts = self.open_weather_gateway._extract_curated_weather_forecasts(
+            OneCall.from_dict(one_call_json_response)
         )
         # 1 current + 2 hourly
         self.assertEqual(3, curated_forecasts.__len__())
@@ -102,10 +100,8 @@ class OpenWeatherGatewayTestCase(OpenWeatherGatewayVCRMixin, TestCase):
         one_call_json_response = get_sample_one_call_response(
             daily_forecasts=[], hourly_forecasts=[]
         )
-        curated_forecasts = (
-            self.open_weather_gateway._extract_curated_weather_forecasts(
-                OneCall.from_dict(one_call_json_response)
-            )
+        curated_forecasts = self.open_weather_gateway._extract_curated_weather_forecasts(
+            OneCall.from_dict(one_call_json_response)
         )
         # 1 current
         self.assertEqual(1, curated_forecasts.__len__())
@@ -133,10 +129,8 @@ class OpenWeatherGatewayTestCase(OpenWeatherGatewayVCRMixin, TestCase):
 
     def test_extract_curated_weather_forecasts_curates_daily_forecast_correctly(self):
         one_call_json_response = get_sample_one_call_response(hourly_forecasts=[])
-        curated_forecasts = (
-            self.open_weather_gateway._extract_curated_weather_forecasts(
-                OneCall.from_dict(one_call_json_response)
-            )
+        curated_forecasts = self.open_weather_gateway._extract_curated_weather_forecasts(
+            OneCall.from_dict(one_call_json_response)
         )
         # 1current + 2 daily
         self.assertEqual(3, curated_forecasts.__len__())

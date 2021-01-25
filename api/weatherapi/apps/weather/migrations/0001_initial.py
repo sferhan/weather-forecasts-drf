@@ -66,8 +66,6 @@ class Migration(migrations.Migration):
                 ("uvi", models.DecimalField(decimal_places=2, max_digits=4, null=True)),
                 ("misc", jsonfield.fields.JSONField(default={})),
             ],
-            options={
-                "unique_together": {("lon", "lat", "timestamp", "forecast_span")},
-            },
-        ),
+            options={"unique_together": {("lon", "lat", "timestamp", "forecast_span")}},
+        )
     ]
