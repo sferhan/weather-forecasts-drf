@@ -11,7 +11,8 @@ An Django REST Framework application for pulling, caching, searching and exporti
 1. Create a virtual env `python3 -m venv venv`
 2. Activate venv `source ./venv/bin/activate`
 3. Configure local postgres database `./scripts/setup-dev.sh`
-4. Start django server `python ./api/manage.py runserver`
+4. Replace `__YOUR_OPEN_WEATHER_MAP_API_KEY_HERE__` in `api/.env` with your Open Weather Map API Key 
+4. Start django server `cd api && python manage.py runserver`
 
 ## Features
 ### API features
